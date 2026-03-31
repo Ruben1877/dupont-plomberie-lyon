@@ -1,79 +1,114 @@
 import Link from "next/link"
-import siteData from "@/lib/site-data"
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from "@heroicons/react/24/outline"
+import siteData from "@/lib/site-data"
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="bg-gray-900">
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xl font-bold text-white">{siteData.businessName}</h3>
-              <p className="mt-2 text-sm text-gray-400">{siteData.tagline}</p>
+    <footer className="bg-navy-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-10 h-10 bg-gold-400 rounded-lg flex items-center justify-center">
+                <span className="text-navy-900 font-bold text-xl">JD</span>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">{siteData.businessName}</h3>
+                <p className="text-sm text-gray-300">{siteData.trade}</p>
+              </div>
             </div>
-            <div className="flex space-x-6">
-              <span className="text-sm text-gray-400">{siteData.emergency}</span>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              {siteData.tagline}
+            </p>
+            <div className="mt-4 space-y-2">
+              <p className="text-sm text-gold-400 font-medium">{siteData.emergency}</p>
+              <p className="text-sm text-gray-400">{siteData.serviceArea}</p>
             </div>
           </div>
-          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold leading-6 text-white">Navigation</h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {siteData.navigation.map((item) => (
-                    <li key={item.name}>
-                      <Link href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Navigation</h3>
+            <ul className="space-y-2">
+              {siteData.navigation.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="text-gray-300 hover:text-gold-400 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Services</h3>
+            <ul className="space-y-2">
+              {siteData.services.slice(0, 4).map((service) => (
+                <li key={service.title}>
+                  <Link
+                    href="/services"
+                    className="text-gray-300 hover:text-gold-400 transition-colors text-sm"
+                  >
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Contact</h3>
+            <div className="space-y-3">
+              <a
+                href={`tel:${siteData.phone}`}
+                className="flex items-start space-x-3 text-gray-300 hover:text-gold-400 transition-colors"
+              >
+                <PhoneIcon className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                <span className="text-sm">{siteData.phone}</span>
+              </a>
+              <a
+                href={`mailto:${siteData.email}`}
+                className="flex items-start space-x-3 text-gray-300 hover:text-gold-400 transition-colors"
+              >
+                <EnvelopeIcon className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                <span className="text-sm">{siteData.email}</span>
+              </a>
+              <div className="flex items-start space-x-3 text-gray-300">
+                <MapPinIcon className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                <span className="text-sm">{siteData.address}</span>
               </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-white">Services</h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {siteData.services.map((service, index) => (
-                    <li key={index}>
-                      <span className="text-sm leading-6 text-gray-300">{service.title}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="md:grid md:grid-cols-1 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold leading-6 text-white">Contact</h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  <li className="flex items-center gap-2">
-                    <PhoneIcon className="h-4 w-4 text-gray-400" />
-                    <a href={`tel:${siteData.phone}`} className="text-sm leading-6 text-gray-300 hover:text-white">
-                      {siteData.phone}
-                    </a>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <EnvelopeIcon className="h-4 w-4 text-gray-400" />
-                    <a href={`mailto:${siteData.email}`} className="text-sm leading-6 text-gray-300 hover:text-white">
-                      {siteData.email}
-                    </a>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <MapPinIcon className="h-4 w-4 text-gray-400 flex-shrink-0 mt-1" />
-                    <span className="text-sm leading-6 text-gray-300">{siteData.address}</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <ClockIcon className="h-4 w-4 text-gray-400 flex-shrink-0 mt-1" />
-                    <span className="text-sm leading-6 text-gray-300">{siteData.hours}</span>
-                  </li>
-                </ul>
+              <div className="flex items-start space-x-3 text-gray-300">
+                <ClockIcon className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                <span className="text-sm">{siteData.hours}</span>
               </div>
             </div>
           </div>
         </div>
-        <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-xs leading-5 text-gray-400 text-center">
-            © {new Date().getFullYear()} {siteData.businessName}. Tous droits réservés.
-          </p>
+
+        <div className="mt-12 pt-8 border-t border-gray-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+            <p className="text-gray-400 text-sm">
+              © {currentYear} {siteData.businessName}. Tous droits réservés.
+            </p>
+            <div className="flex space-x-6 sm:justify-end">
+              <Link
+                href="/mentions-legales"
+                className="text-gray-400 hover:text-gold-400 text-sm transition-colors"
+              >
+                Mentions légales
+              </Link>
+              <Link
+                href="/politique-confidentialite"
+                className="text-gray-400 hover:text-gold-400 text-sm transition-colors"
+              >
+                Politique de confidentialité
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
