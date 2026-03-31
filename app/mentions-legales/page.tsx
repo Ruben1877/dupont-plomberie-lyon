@@ -1,97 +1,72 @@
-import siteData from "@/lib/site-data"
+import siteData from "@/lib/site-data";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Mentions Légales",
+  description: `Consultez les mentions légales de ${siteData.businessName}.`,
+  robots: {
+    index: false,
+    follow: true,
+  }
+};
 
 export default function MentionsLegalesPage() {
+  const { legalInfo } = siteData;
+
   return (
-    <div className="pt-20">
-      <section className="py-20 sm:py-28 bg-gradient-to-br from-navy-600 to-navy-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-            Mentions Légales
-          </h1>
-        </div>
-      </section>
+    <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-3xl text-base leading-7 text-text-muted">
+        <h1 className="text-3xl font-bold tracking-tight text-primary-950 sm:text-4xl font-heading mb-8">Mentions Légales</h1>
+        
+        <div className="space-y-8">
+          <section>
+            <h2 className="text-xl font-semibold text-primary-950 mb-4">1. Éditeur du site</h2>
+            <p>Conformément aux dispositions de l'article 6-I 1° de la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, l'éditeur du site web www.dupont-plomberie.fr est :</p>
+            <ul className="list-disc pl-6 mt-2 space-y-1">
+              <li><strong>Nom de l'entreprise :</strong> {legalInfo.companyName}</li>
+              <li><strong>Forme juridique :</strong> {legalInfo.legalForm}</li>
+              <li><strong>Adresse :</strong> {legalInfo.address}</li>
+              <li><strong>Numéro SIRET :</strong> {legalInfo.siret}</li>
+              <li><strong>Téléphone :</strong> {legalInfo.phone}</li>
+              <li><strong>Adresse e-mail :</strong> {legalInfo.email}</li>
+            </ul>
+          </section>
 
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg">
-          <h2 className="text-2xl font-bold text-navy-900 mb-4">1. Éditeur du site</h2>
-          <p className="text-gray-700 mb-2">
-            Le présent site web est édité par :
-          </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-1">
-            <li>Raison sociale : {siteData.legalInfo.companyName}</li>
-            <li>Forme juridique : {siteData.legalInfo.legalForm}</li>
-            <li>SIRET : {siteData.legalInfo.siret}</li>
-            <li>Adresse du siège social : {siteData.legalInfo.address}</li>
-            <li>Téléphone : {siteData.legalInfo.phone}</li>
-            <li>Email : {siteData.legalInfo.email}</li>
-          </ul>
+          <section>
+            <h2 className="text-xl font-semibold text-primary-950 mb-4">2. Directeur de la publication</h2>
+            <p>Le directeur de la publication est Monsieur {legalInfo.director}, en sa qualité de gérant.</p>
+          </section>
 
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">2. Directeur de la publication</h2>
-          <p className="text-gray-700">
-            Le directeur de la publication est : {siteData.legalInfo.director}
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">3. Hébergeur du site</h2>
-          <p className="text-gray-700">
-            Ce site est hébergé par : {siteData.legalInfo.host}
-            <br />
-            Site web : <a href="https://vercel.com" className="text-gold-600 hover:text-gold-700">https://vercel.com</a>
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">4. Propriété intellectuelle</h2>
-          <p className="text-gray-700 mb-4">
-            L'ensemble du contenu de ce site (textes, images, vidéos, logos, marques, etc.) est la propriété exclusive de {siteData.legalInfo.companyName} ou de ses partenaires et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle.
-          </p>
-          <p className="text-gray-700 mb-4">
-            Toute reproduction, distribution, modification, adaptation, retransmission ou publication, même partielle, de ces différents éléments est strictement interdite sans l'accord exprès par écrit de {siteData.legalInfo.companyName}.
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">5. Limitation de responsabilité</h2>
-          <p className="text-gray-700 mb-4">
-            Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois contenir des inexactitudes, des omissions ou des lacunes.
-          </p>
-          <p className="text-gray-700 mb-4">
-            {siteData.legalInfo.companyName} ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications indiquées, soit de l'apparition d'un bug ou d'une incompatibilité.
-          </p>
-          <p className="text-gray-700 mb-4">
-            {siteData.legalInfo.companyName} ne pourra également être tenu responsable des dommages indirects (tels par exemple qu'une perte de marché ou perte d'une chance) consécutifs à l'utilisation du site.
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">6. Gestion des données personnelles</h2>
-          <p className="text-gray-700 mb-4">
-            Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité des données vous concernant.
-          </p>
-          <p className="text-gray-700 mb-4">
-            Pour exercer ces droits ou pour toute question sur le traitement de vos données dans ce dispositif, vous pouvez contacter notre délégué à la protection des données à l'adresse suivante : {siteData.legalInfo.email}
-          </p>
-          <p className="text-gray-700">
-            Pour plus d'informations sur la gestion de vos données personnelles, veuillez consulter notre <a href="/politique-confidentialite" className="text-gold-600 hover:text-gold-700">politique de confidentialité</a>.
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">7. Cookies</h2>
-          <p className="text-gray-700 mb-4">
-            Ce site utilise des cookies pour améliorer l'expérience utilisateur. En naviguant sur ce site, vous acceptez l'utilisation des cookies conformément à notre politique de cookies détaillée dans notre <a href="/politique-confidentialite" className="text-gold-600 hover:text-gold-700">politique de confidentialité</a>.
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">8. Droit applicable et juridiction compétente</h2>
-          <p className="text-gray-700 mb-4">
-            Tout litige en relation avec l'utilisation du site {siteData.businessName} est soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.
-          </p>
-
-          <h2 className="text-2xl font-bold text-navy-900 mt-8 mb-4">9. Crédits</h2>
-          <p className="text-gray-700">
-            Photos : Unsplash (<a href="https://unsplash.com" className="text-gold-600 hover:text-gold-700">https://unsplash.com</a>)
-            <br />
-            Icônes : Heroicons, Lucide
-          </p>
-
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <p className="text-sm text-gray-600">
-              Date de dernière mise à jour : {new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+          <section>
+            <h2 className="text-xl font-semibold text-primary-950 mb-4">3. Hébergeur du site</h2>
+            <p>Le site est hébergé par la société :</p>
+            <p className="mt-2">
+              <strong>Vercel Inc.</strong><br />
+              440 N Barranca Ave #4133<br />
+              Covina, CA 91723, USA<br />
+              Site web : <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="text-primary-800 hover:underline">https://vercel.com</a>
             </p>
-          </div>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-primary-950 mb-4">4. Propriété intellectuelle</h2>
+            <p>L'ensemble de ce site (contenus, textes, images, vidéos, logos) constitue une œuvre protégée par la législation en vigueur sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés. La reproduction, représentation, ou diffusion, totale ou partielle, de ce site sur quelque support que ce soit est formellement interdite sans l'autorisation expresse du directeur de la publication.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-primary-950 mb-4">5. Limitation de responsabilité</h2>
+            <p>{legalInfo.companyName} s'efforce d'assurer au mieux de ses possibilités l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, {legalInfo.companyName} décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur le site, ainsi que pour tous dommages résultant d'une intrusion frauduleuse d'un tiers ayant entraîné une modification des informations mises à disposition sur le site.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-primary-950 mb-4">6. Crédits</h2>
+            <ul className="list-disc pl-6 mt-2 space-y-1">
+              <li>Photos : Unsplash (<a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="text-primary-800 hover:underline">https://unsplash.com</a>)</li>
+              <li>Icônes : Heroicons (<a href="https://heroicons.com" target="_blank" rel="noopener noreferrer" className="text-primary-800 hover:underline">https://heroicons.com</a>), Lucide (<a href="https://lucide.dev" target="_blank" rel="noopener noreferrer" className="text-primary-800 hover:underline">https://lucide.dev</a>)</li>
+            </ul>
+          </section>
         </div>
-      </section>
+      </div>
     </div>
-  )
+  );
 }

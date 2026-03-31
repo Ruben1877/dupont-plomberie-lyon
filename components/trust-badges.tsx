@@ -1,46 +1,32 @@
-import { 
-  ShieldCheckIcon, 
-  ClockIcon, 
-  HandThumbUpIcon, 
-  TrophyIcon 
-} from "@heroicons/react/24/outline"
 import siteData from "@/lib/site-data"
 
 export default function TrustBadges() {
-  const badges = [
-    {
-      icon: ShieldCheckIcon,
-      value: `${siteData.experience} ans`,
-      label: "d'expérience"
-    },
-    {
-      icon: ClockIcon,
-      value: "30 min",
-      label: "intervention rapide"
-    },
-    {
-      icon: HandThumbUpIcon,
-      value: "2500+",
-      label: "clients satisfaits"
-    },
-    {
-      icon: TrophyIcon,
-      value: "Certifié",
-      label: "Qualibat RGE"
-    }
-  ]
-
   return (
-    <section className="py-12 sm:py-16 bg-navy-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {badges.map((badge, index) => (
-            <div key={index} className="text-center group">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300 mb-3">
-                <badge.icon className="h-8 w-8 text-gold-500" />
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            {siteData.trustBadges.title}
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {siteData.trustBadges.subtitle}
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {siteData.trustBadges.badges.map((badge, index) => (
+            <div key={index} className="text-center p-6 bg-white rounded-lg shadow-sm">
+              <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-content-center">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
               </div>
-              <div className="text-2xl font-bold text-navy-900">{badge.value}</div>
-              <div className="text-sm text-gray-600">{badge.label}</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {badge.title}
+              </h3>
+              <p className="text-gray-600">
+                {badge.description}
+              </p>
             </div>
           ))}
         </div>

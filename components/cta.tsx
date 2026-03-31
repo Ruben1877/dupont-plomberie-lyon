@@ -1,56 +1,80 @@
-import Link from "next/link"
-import { PhoneIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/outline"
-import siteData from "@/lib/site-data"
+"use client";
 
-export default function CTA() {
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import siteData from '@/lib/site-data';
+import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/20/solid';
+
+export default function Cta() {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+            entry.target.classList.remove('opacity-0', 'scale-95');
+            entry.target.classList.add('opacity-100', 'scale-100');
+            observer.unobserve(entry.target);
+            }
+        },
+        { threshold: 0.1 }
+        );
+
+        if (ref.current) {
+        observer.observe(ref.current);
+        }
+
+        return () => {
+        if (ref.current) {
+            observer.unobserve(ref.current);
+        }
+        };
+    }, []);
+
   return (
-    <section className="relative py-20 sm:py-28 overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-gradient-to-br from-navy-600 to-navy-800"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.05'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`
-        }}
-      />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-          Besoin d'un Plombier Rapidement ?
-        </h2>
-        <p className="text-xl sm:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
-          {siteData.emergency} — Intervention rapide garantie
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href={`tel:${siteData.phone}`}
-            className="inline-flex items-center justify-center px-8 py-4 bg-gold-400 text-navy-900 font-semibold rounded-lg hover:bg-gold-500 hover:scale-105 hover:shadow-xl transform transition-all duration-300"
+    <div className="bg-white">
+      <div className="mx-auto max-w-7xl py-16 sm:px-6 sm:py-24 lg:px-8">
+        <div 
+          ref={ref}
+          className="relative isolate overflow-hidden gradient-cta px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16 opacity-0 scale-95 transition-all duration-700 ease-out"
+        >
+          <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl font-heading">
+            Prêt à démarrer votre projet ?
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary-200">
+            Contactez-nous dès aujourd'hui pour un devis gratuit et sans engagement. Nous sommes à votre écoute pour toute urgence ou projet d'installation.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <a
+              href={`tel:${siteData.phone}`}
+              className="group inline-flex items-center gap-x-2 rounded-md bg-secondary-400 px-6 py-3 text-sm font-semibold text-primary-950 shadow-sm hover:bg-secondary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-400 transition-transform hover:scale-105"
+            >
+              <PhoneIcon className="h-5 w-5" />
+              Appeler pour une urgence
+            </a>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-x-2 rounded-md bg-white px-6 py-3 text-sm font-semibold text-primary-950 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-transform hover:scale-105"
+            >
+              <EnvelopeIcon className="h-5 w-5" />
+              Demander un devis
+            </Link>
+          </div>
+          <svg
+            viewBox="0 0 1024 1024"
+            className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+            aria-hidden="true"
           >
-            <PhoneIcon className="h-5 w-5 mr-2" />
-            Appeler maintenant
-          </a>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white text-navy-900 font-semibold rounded-lg hover:bg-gray-100 hover:scale-105 hover:shadow-xl transform transition-all duration-300"
-          >
-            <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
-            Devis gratuit en ligne
-          </Link>
-        </div>
-
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <div className="text-3xl font-bold text-gold-400 mb-1">30 min</div>
-            <div className="text-sm text-gray-200">Temps d'intervention moyen</div>
-          </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <div className="text-3xl font-bold text-gold-400 mb-1">98%</div>
-            <div className="text-sm text-gray-200">Clients satisfaits</div>
-          </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <div className="text-3xl font-bold text-gold-400 mb-1">24/7</div>
-            <div className="text-sm text-gray-200">Service d'urgence</div>
-          </div>
+            <circle cx={512} cy={512} r={512} fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)" fillOpacity="0.7" />
+            <defs>
+              <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
+                <stop stopColor="#ca8a04" />
+                <stop offset={1} stopColor="#333fa6" />
+              </radialGradient>
+            </defs>
+          </svg>
         </div>
       </div>
-    </section>
-  )
+    </div>
+  );
 }

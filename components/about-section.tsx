@@ -1,64 +1,96 @@
-import Image from "next/image"
-import Link from "next/link"
-import { CheckIcon } from "@heroicons/react/24/outline"
-import siteData from "@/lib/site-data"
+"use client";
 
-export default function AboutSection() {
-  const highlights = [
-    "Intervention rapide 24h/24 et 7j/7",
-    "Devis gratuit et transparent",
-    "Garantie décennale sur tous travaux",
-    "Équipe qualifiée et certifiée RGE"
-  ]
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import siteData from '@/lib/site-data';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { ShieldCheckIcon, ClockIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+
+const AnimatedSection = ({ children, className = '' }: { children: React.ReactNode, className?: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   return (
-    <section className="py-20 sm:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="scroll-reveal">
-            <h2 className="text-4xl sm:text-5xl font-bold text-navy-900 mb-6 tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-              Votre Plombier de Confiance à {siteData.city}
-            </h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Depuis {siteData.experience} ans, {siteData.businessName} intervient sur {siteData.serviceArea} pour tous vos besoins en plomberie et chauffage. Notre équipe de professionnels qualifiés met son expertise à votre service pour des interventions rapides et durables.
-            </p>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Que ce soit pour une urgence ou des travaux planifiés, nous nous engageons à fournir un service de qualité avec des tarifs transparents et compétitifs.
-            </p>
-            <ul className="space-y-3 mb-8">
-              {highlights.map((highlight, index) => (
-                <li key={index} className="flex items-start">
-                  <CheckIcon className="h-6 w-6 text-gold-400 mt-0.5 mr-3 flex-shrink-0" />
-                  <span className="text-gray-700">{highlight}</span>
-                </li>
-              ))}
-            </ul>
+    <div
+      ref={ref}
+      className={`opacity-0 translate-y-8 transition-all duration-700 ease-out ${className}`}
+    >
+      {children}
+    </div>
+  );
+};
+
+export default function AboutSection() {
+  return (
+    <div className="relative bg-white section-padding">
+      <div className="mx-auto max-w-7xl lg:flex lg:items-center lg:gap-x-10 px-6 lg:px-8">
+        <AnimatedSection className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
+          <h2 className="text-base font-semibold leading-7 text-secondary-600">Notre Engagement</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-primary-950 sm:text-4xl font-heading">
+            L'artisanat au service de votre confort
+          </p>
+          <p className="mt-6 text-lg leading-8 text-text-muted">
+            Depuis plus de 15 ans, Jean Dupont Plomberie s'engage à fournir un service de qualité, alliant savoir-faire traditionnel et techniques modernes. Basé à Lyon, nous sommes votre partenaire de confiance pour tous vos besoins en plomberie et chauffage.
+          </p>
+          <ul className="mt-8 space-y-4 text-text-muted">
+            <li className="flex gap-x-3">
+              <ShieldCheckIcon className="mt-1 h-5 w-5 flex-none text-primary-800" aria-hidden="true" />
+              <span><strong>Qualité et Fiabilité :</strong> Des interventions soignées et des matériaux durables.</span>
+            </li>
+            <li className="flex gap-x-3">
+              <ClockIcon className="mt-1 h-5 w-5 flex-none text-primary-800" aria-hidden="true" />
+              <span><strong>Rapidité et Disponibilité :</strong> Un service d'urgence efficace pour répondre à vos imprévus.</span>
+            </li>
+            <li className="flex gap-x-3">
+              <UserGroupIcon className="mt-1 h-5 w-5 flex-none text-primary-800" aria-hidden="true" />
+              <span><strong>Conseil et Proximité :</strong> Un artisan à votre écoute pour des solutions sur mesure.</span>
+            </li>
+          </ul>
+          <div className="mt-10">
             <Link
               href="/about"
-              className="inline-flex items-center px-6 py-3 bg-navy-600 text-white font-semibold rounded-lg hover:bg-navy-700 hover:scale-105 hover:shadow-lg transform transition-all duration-300"
+              className="group inline-flex items-center gap-x-2 rounded-md bg-primary-950 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-primary-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-950 transition-transform hover:scale-105"
             >
-              En savoir plus sur nous
-              <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+              En savoir plus sur nous <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-          <div className="relative scroll-reveal" style={{ transitionDelay: "200ms" }}>
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600"
-                alt="Plombier professionnel au travail"
-                width={800}
-                height={600}
-                className="object-cover w-full h-full"
-                unoptimized={true}
-              />
-            </div>
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-gold-400/10 rounded-full blur-3xl"></div>
-            <div className="absolute -top-6 -left-6 w-48 h-48 bg-navy-600/10 rounded-full blur-3xl"></div>
+        </AnimatedSection>
+        <AnimatedSection className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow" style={{ transitionDelay: '200ms' }}>
+          <div className="relative overflow-hidden rounded-2xl shadow-xl">
+            <Image
+              src="https://images.unsplash.com/photo-1542621334-a254cf47763b?q=80&w=800&h=600&fit=crop"
+              alt="Artisan plombier travaillant avec concentration"
+              width={800}
+              height={600}
+              unoptimized={true}
+              className="w-full h-full object-cover"
+            />
           </div>
-        </div>
+        </AnimatedSection>
       </div>
-    </section>
-  )
+    </div>
+  );
 }

@@ -1,92 +1,76 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import * as HeroIcons from "@heroicons/react/24/outline"
-import siteData from "@/lib/site-data"
+import { useEffect, useRef, useState } from 'react';
+import siteData from '@/lib/site-data';
+import { WrenchScrewdriverIcon, ClockIcon, TrophyIcon, UsersIcon } from '@heroicons/react/24/outline';
 
-export default function StatsSection() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
+const iconMap: Record<string, typeof WrenchScrewdriverIcon> = { WrenchScrewdriverIcon, ClockIcon, TrophyIcon, UsersIcon };
+
+function CountUp({ end, duration = 2000 }: { end: number; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true)
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          let start = 0;
+          const startTime = performance.now();
+
+          const animate = (currentTime: number) => {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+            const currentCount = Math.floor(progress * (end - start) + start);
+            setCount(currentCount);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              setCount(end);
+            }
+          };
+
+          requestAnimationFrame(animate);
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.3 }
-    )
+      { threshold: 0.5 }
+    );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+    if (ref.current) {
+      observer.observe(ref.current);
     }
 
-    return () => observer.disconnect()
-  }, [])
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [end, duration]);
 
-  const CountUp = ({ end, suffix }: { end: number; suffix: string }) => {
-    const [count, setCount] = useState(0)
+  return <span ref={ref}>{count}</span>;
+}
 
-    useEffect(() => {
-      if (!isVisible) return
-
-      let start = 0
-      const duration = 2000
-      const increment = end / (duration / 16)
-
-      const timer = setInterval(() => {
-        start += increment
-        if (start > end) {
-          setCount(end)
-          clearInterval(timer)
-        } else {
-          setCount(Math.floor(start))
-        }
-      }, 16)
-
-      return () => clearInterval(timer)
-    }, [isVisible, end])
-
-    return (
-      <span className="text-4xl sm:text-5xl font-bold text-navy-900">
-        {count}{suffix}
-      </span>
-    )
-  }
-
-  const getIcon = (iconName: string) => {
-    const Icon = HeroIcons[iconName as keyof typeof HeroIcons]
-    return Icon ? <Icon className="h-8 w-8 text-gold-400" /> : null
-  }
-
+export default function StatsSection() {
   return (
-    <section ref={sectionRef} className="py-20 sm:py-28 bg-gradient-to-br from-navy-600 to-navy-800 relative overflow-hidden">
-      <div 
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }}
-      />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {siteData.stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className={`text-center ${isVisible ? "animate-count-up" : "opacity-0"}`}
-              style={{ animationDelay: `${index * 200}ms` }}
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full mb-4">
-                {getIcon(stat.icon)}
+    <div className="bg-primary-950 section-padding">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+          {siteData.stats.map((stat, index) => {
+            const Icon = iconMap[stat.icon];
+            return (
+              <div key={stat.label} className="flex flex-col items-center text-center animate-count-up" style={{ animationDelay: `${index * 150}ms`, opacity: 0 }}>
+                {Icon && <Icon className="h-12 w-12 text-secondary-400" />}
+                <div className="mt-4 text-4xl font-bold tracking-tight text-white font-heading">
+                  <CountUp end={stat.value} />
+                  {stat.suffix}
+                </div>
+                <p className="mt-2 text-base text-primary-200">{stat.label}</p>
               </div>
-              <div className="text-white">
-                <CountUp end={stat.value} suffix={stat.suffix} />
-              </div>
-              <p className="text-gray-300 text-sm sm:text-base mt-2">{stat.label}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
-    </section>
-  )
+    </div>
+  );
 }

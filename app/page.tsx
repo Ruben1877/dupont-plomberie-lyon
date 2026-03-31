@@ -1,12 +1,14 @@
 import Hero from "@/components/hero"
-import TrustBadges from "@/components/trust-badges"
 import ServicesSection from "@/components/services-section"
 import AboutSection from "@/components/about-section"
+import GallerySection from "@/components/gallery-section"
 import StatsSection from "@/components/stats-section"
 import Testimonials from "@/components/testimonials"
-import GallerySection from "@/components/gallery-section"
 import FAQ from "@/components/faq"
 import CTA from "@/components/cta"
+import TrustBadges from "@/components/trust-badges"
+import FloatingCallButton from "@/components/floating-call-button"
+import siteData from "@/lib/site-data"
 
 export default function HomePage() {
   return (
@@ -16,10 +18,11 @@ export default function HomePage() {
       <ServicesSection />
       <AboutSection />
       <StatsSection />
-      <Testimonials />
       <GallerySection />
+      <Testimonials />
       <FAQ />
       <CTA />
+      <FloatingCallButton />
     </>
   )
 }

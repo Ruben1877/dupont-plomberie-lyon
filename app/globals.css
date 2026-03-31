@@ -1,62 +1,83 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy-50: #eff3f8;
-  --color-navy-100: #d8e2ed;
-  --color-navy-200: #b4c6dd;
-  --color-navy-300: #83a2c5;
-  --color-navy-400: #5a7faa;
-  --color-navy-500: #3f638f;
-  --color-navy-600: #1e3a5f;
-  --color-navy-700: #1a3252;
-  --color-navy-800: #192c44;
-  --color-navy-900: #19283a;
-  
-  --color-gold-50: #fefcf3;
-  --color-gold-100: #fdf7e0;
-  --color-gold-200: #faecc1;
-  --color-gold-300: #f6dc99;
-  --color-gold-400: #d4af37;
-  --color-gold-500: #c09b2f;
-  --color-gold-600: #a17d23;
-  --color-gold-700: #82621e;
-  --color-gold-800: #6b4f1d;
-  --color-gold-900: #5a421c;
+  --color-primary-50: #f0f4ff;
+  --color-primary-100: #e0e9ff;
+  --color-primary-200: #c7d7fe;
+  --color-primary-300: #a4bcfd;
+  --color-primary-400: #7f9bfa;
+  --color-primary-500: #6079f4;
+  --color-primary-600: #4b5de5;
+  --color-primary-700: #3c4acc;
+  --color-primary-800: #333fa6;
+  --color-primary-900: #2b3584;
+  --color-primary-950: #1a204f; /* Navy Blue Base */
+
+  --color-secondary-50: #fefce8;
+  --color-secondary-100: #fef9c3;
+  --color-secondary-200: #fef08a;
+  --color-secondary-300: #fde047;
+  --color-secondary-400: #facc15; /* Gold Base */
+  --color-secondary-500: #eab308;
+  --color-secondary-600: #ca8a04;
+  --color-secondary-700: #a16207;
+  --color-secondary-800: #854d0e;
+  --color-secondary-900: #713f12;
+  --color-secondary-950: #422006;
+
+  --color-surface: #f8fafc; /* light grey for alternating sections */
+  --color-text-base: #1e293b; /* slate-800 */
+  --color-text-muted: #475569; /* slate-600 */
+
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
 }
 
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-base);
+  background-color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-primary-950);
+}
+
+.section-padding {
+  @apply py-20 sm:py-28;
+}
+
+.gradient-cta {
+  background-image: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-950) 100%);
+}
+
+.gradient-hero {
+  background: radial-gradient(circle at top left, var(--color-primary-950) 0%, oklch(18.06% 0.04 258.33 / 90%) 50%, oklch(18.06% 0.04 258.33) 100%);
+}
+
+@keyframes pulse-animation {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 oklch(67.4% 0.17 64.9 / 0.7);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px oklch(67.4% 0.17 64.9 / 0);
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+.animate-pulse-custom {
+  animation: pulse-animation 2s infinite;
 }
 
 @keyframes count-up {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
@@ -64,74 +85,6 @@
   }
 }
 
-@keyframes pulse-scale {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(5deg);
-  }
-}
-
-.animate-fade-up {
-  animation: fade-up 0.7s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.3s ease-out forwards;
-}
-
 .animate-count-up {
-  animation: count-up 0.6s ease-out forwards;
-}
-
-.animate-pulse-scale {
-  animation: pulse-scale 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-/* Scroll reveal utilities */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.7s ease-out;
-}
-
-.scroll-reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-navy-50);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-navy-600);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-navy-700);
+  animation: count-up 0.5s ease-out forwards;
 }

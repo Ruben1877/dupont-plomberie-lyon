@@ -1,128 +1,95 @@
-import ContactForm from "@/components/contact-form"
-import { 
-  PhoneIcon, 
-  EnvelopeIcon, 
-  MapPinIcon, 
-  ClockIcon 
-} from "@heroicons/react/24/outline"
-import siteData from "@/lib/site-data"
+import siteData from "@/lib/site-data";
+import ContactForm from "@/components/contact-form";
+import { Metadata } from "next";
+import { PhoneIcon, EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: `Contactez ${siteData.businessName} pour un devis, une urgence ou toute question. Nous intervenons rapidement à Lyon et ses environs.`,
+};
+
+const contactDetails = [
+  {
+    name: "Adresse",
+    value: siteData.address,
+    icon: MapPinIcon,
+  },
+  {
+    name: "Téléphone",
+    value: siteData.phoneFormatted,
+    href: `tel:${siteData.phone}`,
+    icon: PhoneIcon,
+  },
+  {
+    name: "Email",
+    value: siteData.email,
+    href: `mailto:${siteData.email}`,
+    icon: EnvelopeIcon,
+  },
+];
 
 export default function ContactPage() {
   return (
-    <div className="pt-20">
-      <section className="py-20 sm:py-28 bg-gradient-to-br from-navy-600 to-navy-800 relative overflow-hidden">
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-            Contactez-Nous
-          </h1>
-          <p className="text-xl sm:text-2xl text-gray-200 max-w-3xl mx-auto">
-            {siteData.emergency} — Notre équipe est à votre écoute pour tous vos besoins
-          </p>
-        </div>
-      </section>
-
-      <section className="py-20 sm:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-navy-900 mb-8">Envoyez-nous un message</h2>
-              <ContactForm />
+    <div className="relative isolate bg-white">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
+        <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
+          <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
+            <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden bg-gray-100 ring-1 ring-gray-900/10 lg:w-1/2">
+              <svg
+                className="absolute inset-0 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+                aria-hidden="true"
+              >
+                <defs>
+                  <pattern
+                    id="83fd4e5a-9d52-4224-87a9-65de9b674d2b"
+                    width={200}
+                    height={200}
+                    x="100%"
+                    y={-1}
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path d="M130 200V.5M.5 .5H200" fill="none" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" strokeWidth={0} fill="white" />
+                <svg x="100%" y={-1} className="overflow-visible fill-gray-50">
+                  <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
+                </svg>
+                <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-4224-87a9-65de9b674d2b)" />
+              </svg>
             </div>
-
-            <div>
-              <h2 className="text-3xl font-bold text-navy-900 mb-8">Informations de contact</h2>
-              
-              <div className="space-y-6 mb-8">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-navy-50 rounded-lg flex items-center justify-center">
-                    <PhoneIcon className="h-6 w-6 text-gold-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-navy-900 mb-1">Téléphone</h3>
-                    <a href={`tel:${siteData.phone}`} className="text-gold-600 hover:text-gold-700 font-medium">
-                      {siteData.phone}
-                    </a>
-                    <p className="text-sm text-gray-600 mt-1">{siteData.emergency}</p>
-                  </div>
+            <h1 className="text-3xl font-bold tracking-tight text-primary-950 sm:text-4xl font-heading">Entrons en contact</h1>
+            <p className="mt-6 text-lg leading-8 text-text-muted">
+              Une question ? Un projet ? Une urgence ? Nous sommes à votre disposition pour vous répondre dans les meilleurs délais.
+            </p>
+            <dl className="mt-10 space-y-4 text-base leading-7 text-text-muted">
+              {contactDetails.map((detail) => (
+                <div key={detail.name} className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">{detail.name}</span>
+                    <detail.icon className="h-7 w-6 text-gray-400" aria-hidden="true" />
+                  </dt>
+                  <dd>
+                    {detail.href ? (
+                      <a className="hover:text-primary-950" href={detail.href}>
+                        {detail.value}
+                      </a>
+                    ) : (
+                      <span>{detail.value}</span>
+                    )}
+                  </dd>
                 </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-navy-50 rounded-lg flex items-center justify-center">
-                    <EnvelopeIcon className="h-6 w-6 text-gold-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-navy-900 mb-1">Email</h3>
-                    <a href={`mailto:${siteData.email}`} className="text-gold-600 hover:text-gold-700">
-                      {siteData.email}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-navy-50 rounded-lg flex items-center justify-center">
-                    <MapPinIcon className="h-6 w-6 text-gold-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-navy-900 mb-1">Adresse</h3>
-                    <p className="text-gray-700">{siteData.address}</p>
-                    <p className="text-sm text-gray-600 mt-1">{siteData.serviceArea}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-navy-50 rounded-lg flex items-center justify-center">
-                    <ClockIcon className="h-6 w-6 text-gold-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-navy-900 mb-1">Horaires</h3>
-                    <p className="text-gray-700">{siteData.hours}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="font-semibold text-navy-900 mb-4">Zone d'intervention</h3>
-                <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89577.97672384647!2d4.796403949218751!3d45.75799999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4ea516ae88797%3A0x408ab2ae4bb21e0!2sLyon!5e0!3m2!1sfr!2sfr!4v1234567890"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full h-full"
-                  />
-                </div>
-              </div>
+              ))}
+            </dl>
+            <div className="mt-10">
+                <h2 className="text-base font-semibold text-primary-950">Horaires d'ouverture</h2>
+                <p className="text-text-muted">{siteData.hours}</p>
+                <p className="mt-1 text-base font-semibold text-red-600">{siteData.emergency}</p>
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="py-16 bg-navy-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-2xl font-bold text-navy-900 mb-4">
-            Urgence plomberie ?
-          </h3>
-          <p className="text-lg text-gray-600 mb-6">
-            Pour toute urgence, n'hésitez pas à nous appeler directement
-          </p>
-          <a
-            href={`tel:${siteData.phone}`}
-            className="inline-flex items-center px-8 py-3 bg-gold-400 text-navy-900 font-semibold rounded-lg hover:bg-gold-500 hover:scale-105 hover:shadow-lg transform transition-all duration-300"
-          >
-            <PhoneIcon className="h-5 w-5 mr-2" />
-            {siteData.phone}
-          </a>
-        </div>
-      </section>
+        <ContactForm />
+      </div>
     </div>
-  )
+  );
 }

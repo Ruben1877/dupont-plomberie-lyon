@@ -1,120 +1,115 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { PhoneIcon, EnvelopeIcon, UserIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline"
+import { useState, FormEvent } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: ""
-  })
+  const [agreed, setAgreed] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    alert("Merci pour votre message. Nous vous recontacterons dans les plus brefs délais.")
-  }
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus('submitting');
+    
+    // Simulate form submission
+    setTimeout(() => {
+      // In a real app, you would handle form submission here (e.g., API call)
+      // For now, we'll just show an alert.
+      const formData = new FormData(event.currentTarget);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Form data:', data);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      if (data.name && data.email && data.message) {
+        setStatus('success');
+        alert("Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.");
+        (event.target as HTMLFormElement).reset();
+        setAgreed(false);
+      } else {
+        setStatus('error');
+        alert("Une erreur est survenue. Veuillez réessayer.");
+      }
+    }, 1000);
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-          Nom complet
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <UserIcon className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition-colors"
-            placeholder="Jean Martin"
-          />
-        </div>
+    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-2xl text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-primary-950 sm:text-4xl font-heading">Contactez-nous</h2>
+        <p className="mt-2 text-lg leading-8 text-text-muted">
+          Pour toute demande de devis, information ou urgence, remplissez le formulaire ci-dessous.
+        </p>
       </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-          Email
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <EnvelopeIcon className="h-5 w-5 text-gray-400" />
+      <form onSubmit={handleSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+          <div>
+            <label htmlFor="name" className="block text-sm font-semibold leading-6 text-gray-900">
+              Nom complet
+            </label>
+            <div className="mt-2.5">
+              <input
+                type="text"
+                name="name"
+                id="name"
+                autoComplete="name"
+                required
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-800 sm:text-sm sm:leading-6"
+              />
+            </div>
           </div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition-colors"
-            placeholder="jean.martin@email.com"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-          Téléphone
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <PhoneIcon className="h-5 w-5 text-gray-400" />
+          <div>
+            <label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
+              Numéro de téléphone
+            </label>
+            <div className="mt-2.5">
+              <input
+                type="tel"
+                name="phone-number"
+                id="phone-number"
+                autoComplete="tel"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-800 sm:text-sm sm:leading-6"
+              />
+            </div>
           </div>
-          <input
-            type="tel"
-            name="phone"
-            id="phone"
-            required
-            value={formData.phone}
-            onChange={handleChange}
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition-colors"
-            placeholder="06 12 34 56 78"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-          Message
-        </label>
-        <div className="relative">
-          <div className="absolute top-3 left-3 pointer-events-none">
-            <ChatBubbleLeftRightIcon className="h-5 w-5 text-gray-400" />
+          <div className="sm:col-span-2">
+            <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
+              Email
+            </label>
+            <div className="mt-2.5">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                autoComplete="email"
+                required
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-800 sm:text-sm sm:leading-6"
+              />
+            </div>
           </div>
-          <textarea
-            name="message"
-            id="message"
-            rows={4}
-            required
-            value={formData.message}
-            onChange={handleChange}
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition-colors"
-            placeholder="Décrivez votre besoin..."
-          />
+          <div className="sm:col-span-2">
+            <label htmlFor="message" className="block text-sm font-semibold leading-6 text-gray-900">
+              Message
+            </label>
+            <div className="mt-2.5">
+              <textarea
+                name="message"
+                id="message"
+                rows={4}
+                required
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-800 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-
-      <button
-        type="submit"
-        className="w-full bg-navy-600 text-white font-semibold py-3 rounded-lg hover:bg-navy-700 hover:scale-[1.02] hover:shadow-lg transform transition-all duration-300"
-      >
-        Envoyer le message
-      </button>
-    </form>
-  )
+        <div className="mt-10">
+          <button
+            type="submit"
+            disabled={status === 'submitting'}
+            className="block w-full rounded-md bg-primary-950 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-800 disabled:opacity-50"
+          >
+            {status === 'submitting' ? 'Envoi en cours...' : 'Envoyer le message'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }

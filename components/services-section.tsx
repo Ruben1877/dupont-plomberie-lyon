@@ -1,65 +1,44 @@
-import Link from "next/link"
-import * as HeroIcons from "@heroicons/react/24/outline"
 import siteData from "@/lib/site-data"
 
 export default function ServicesSection() {
-  const getIcon = (iconName: string) => {
-    const Icon = HeroIcons[iconName as keyof typeof HeroIcons]
-    return Icon ? <Icon className="h-12 w-12 text-gold-400" /> : null
-  }
-
   return (
-    <section className="py-20 sm:py-28 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="services" className="py-16 bg-white">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold text-navy-900 mb-4 tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-            Nos Services
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            {siteData.servicesSection.title}
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Une expertise complète en plomberie et chauffage pour tous vos besoins
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {siteData.servicesSection.subtitle}
           </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {siteData.services.map((service, index) => (
-            <div
-              key={service.title}
-              className="scroll-reveal bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 p-6 sm:p-8 border border-gray-100"
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className="mb-4">{getIcon(service.icon)}</div>
-              <h3 className="text-xl sm:text-2xl font-semibold text-navy-900 mb-3">
-                {service.title}
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {siteData.servicesSection.items.map((service, index) => (
+            <div key={index} className="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                {service.name}
               </h3>
-              <p className="text-gray-600 mb-4 leading-relaxed">
+              <p className="text-gray-600 mb-4">
                 {service.description}
               </p>
-              <div className="flex items-center justify-between">
-                <span className="text-gold-600 font-medium">{service.price}</span>
-                <Link
-                  href="/contact"
-                  className="text-navy-600 hover:text-gold-600 font-medium inline-flex items-center group"
-                >
-                  En savoir plus
-                  <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
+              <ul className="space-y-2">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center text-sm text-gray-600">
+                    <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Link
-            href="/services"
-            className="inline-flex items-center px-8 py-3 bg-navy-600 text-white font-semibold rounded-lg hover:bg-navy-700 hover:scale-105 hover:shadow-lg transform transition-all duration-300"
-          >
-            Voir tous nos services
-            <svg className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
         </div>
       </div>
     </section>
